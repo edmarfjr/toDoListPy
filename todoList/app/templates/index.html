@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    
+    <div class="col-md-4 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">Nova Tarefa</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.titulo.label(class="form-label") }}
+                        {{ form.titulo(class="form-control", placeholder="Ex: Pagar conta de luz") }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.descricao.label(class="form-label") }}
+                        {{ form.descricao(class="form-control", rows=2) }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            {{ form.prazo.label(class="form-label") }}
+                            {{ form.prazo(class="form-control", type="date") }}
+                        </div>
+                        <div class="col-6 mb-3">
+                            {{ form.prioridade.label(class="form-label") }}
+                            {{ form.prioridade(class="form-select") }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h3>Suas Tarefas</h3>
+        
+        {% if not tarefas %}
+            <div class="alert alert-info">Nenhuma tarefa encontrada. Aproveite o dia! 🏖️</div>
+        {% else %}
+            <div class="list-group">
+                {% for item in tarefas %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ item.titulo }}</h5>
+                        <p class="mb-1 text-muted small">{{ item.descricao }}</p>
+                        
+                        <span class="badge bg-secondary">📅 {{ item.prazo.strftime('%d/%m/%Y') if item.prazo else 'Sem data' }}</span>
+                        
+                        {% if item.prioridade == 'Alta' %}
+                            <span class="badge bg-danger">🔥 Alta</span>
+                        {% elif item.prioridade == 'Média' %}
+                            <span class="badge bg-warning text-dark">⚠️ Média</span>
+                        {% else %}
+                            <span class="badge bg-success">🌱 Baixa</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <a href="{{ url_for('main.update', id=item.id) }}" class="btn btn-sm btn-outline-primary">✏️</a>
+                        <a href="{{ url_for('main.delete', id=item.id) }}" class="btn btn-sm btn-outline-danger">🗑️</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
