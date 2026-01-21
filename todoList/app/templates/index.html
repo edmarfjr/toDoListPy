@@ -71,7 +71,11 @@
                         </div>
                         {% if tarefa.descr %}
                             <small class="text-muted d-block mt-1">
-                                {{ tarefa.descr }}
+                                {% if tarefa.concluida %}
+                                    <s>{{ tarefa.descr }}</s>
+                                {% else %}
+                                    {{ tarefa.descr }}
+                                {% endif %}
                             </small>
                         {% endif %}
                     </td>
