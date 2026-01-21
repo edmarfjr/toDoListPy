@@ -14,3 +14,4 @@ class Tarefa(db.Model):
     prazo = db.Column(db.Date, nullable=True)
     prioridade = db.Column(db.String(20), nullable=True)
     dono_id = db.Column(db.Integer, db.ForeignKey('conta.id'), nullable=False)
+    concluida = db.Column(db.Boolean, default=False)

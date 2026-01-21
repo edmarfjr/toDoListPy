@@ -15,7 +15,7 @@ class CadastroForm(FlaskForm):
 
 class TarefaForm(FlaskForm):
     titulo = StringField('Título', validators=[DataRequired()])
-    descricao = TextAreaField('Descrição')
+    descr = TextAreaField('Descrição')
     prazo = DateField('Prazo de Entrega', format='%Y-%m-%d', validators=[DataRequired()])
     prioridade = SelectField('Prioridade', choices=[
         ('Baixa', 'Baixa'),

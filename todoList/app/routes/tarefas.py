@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, flash, render_template, request, redirect, url_for, session
 from app.extensions import db
 from app.models import Tarefa
 from app.forms import TarefaForm
@@ -70,4 +70,17 @@ def update(id):
         db.session.commit()
         return redirect(url_for('main.home'))   
 
-    return render_template('update.html', tarefa=tarefa)
+    return render_template('update.html', form=form, tarefa=tarefa)
+
+@main_bp.route('/concluir/<int:id>')
+def concluir_tarefa(id):
+    tarefa = Tarefa.query.get_or_404(id)
+
+    if tarefa.dono_id != session['user_id']:
+        flash("Você não tem permissão para concluir esta tarefa.", "danger")
+        return redirect(url_for('main.home'))
+
+    tarefa.concluida = not tarefa.concluida
+
+    db.session.commit()
+    return redirect(url_for('main.home'))
