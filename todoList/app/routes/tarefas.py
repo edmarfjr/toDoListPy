@@ -25,7 +25,7 @@ def home():
     if form.validate_on_submit():
         nova_tarefa = Tarefa(
             titulo=form.titulo.data, 
-            descr=form.descricao.data,
+            descr=form.descr.data,
             prazo=form.prazo.data,
             prioridade=form.prioridade.data,
             dono_id=id_do_dono
