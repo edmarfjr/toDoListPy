@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from app.extensions import db
 from app.models import Conta
 from app.forms import LoginForm, CadastroForm
@@ -25,9 +25,10 @@ def login():
             session['logged_in'] = True
             session['user_id'] = conta.id
             session['user_name'] = conta.username
+            flash(f'Bem vindo de volta, {conta.username}!', 'success')
             return redirect(url_for('main.home'))
         else:
-            return render_template('login.html', form=form, erro="Usuário ou senha incorretos.")
+            flash('Usuário ou senha incorretos.', 'danger')
 
 
     return render_template('login.html',form=form)
@@ -35,6 +36,7 @@ def login():
 @auth_bp.route('/logout')
 def logout():
     session.clear() # Limpa tudo da sessão
+    flash('Você saiu do sistema. Até logo!', 'info')
     return redirect(url_for('auth.login'))
 
 @auth_bp.route('/registrar', methods=['GET', 'POST'])
